@@ -1,5 +1,7 @@
 
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gamefly/utils/data/data.dart';
 class HomePage extends StatefulWidget {
@@ -10,8 +12,28 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  PageController _pageController = PageController(
+    initialPage: 0,
+  );
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
 
+    Timer.periodic(const Duration(seconds: 10), (timer) {
+      if(selectedPage < games.length-1){
+         selectedPage ++;
+      }else{
+        selectedPage=0;
+      }
 
+      _pageController.animateToPage(selectedPage, duration: const Duration(
+         seconds: 10
+      ), curve: Curves.bounceIn);
+    });
+  }
+
+  int selectedPage = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -19,28 +41,34 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Stack(
         children: [
-
           SizedBox(
             width: size.width,
             height: size.height * .50,
             child: PageView(
+              controller: _pageController,
+               onPageChanged: (index){
+                 setState(() {
+                   selectedPage = index;
+                 });
+               },
               scrollDirection: Axis.horizontal,
               children: games.map((e) => Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover, image: NetworkImage(e.image),
                   ),
+
                 ),
               )).toList(),
             ),
           ),
           gradientBox(),
           topLayerWidget(),
+          gameInfoWidget(),
         ],
       ),
     );
   }
-
 
   gradientBox(){
     final size = MediaQuery.of(context).size;
@@ -106,6 +134,42 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           topBarWidget()
+        ],
+      ),
+    );
+  }
+  gameInfoWidget(){
+    var size = MediaQuery.of(context).size;
+    return  SizedBox(
+      height: MediaQuery.of(context).size.height *.90,
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Text(games[selectedPage].name, maxLines: 2, style: TextStyle(
+            fontSize: MediaQuery.of(context).size.height *.040,
+          ),),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: games.map((e) {
+              double doubleRadius =  size.height *.015;
+              return  Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Container(
+                  height: doubleRadius *2,
+                  width:doubleRadius *2 ,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white
+                  ),
+                ),
+              );
+            }).toList(),
+          )
         ],
       ),
     );
