@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Stack(
         children: [
+
           SizedBox(
             width: size.width,
             height: size.height * .50,
@@ -33,7 +34,8 @@ class _HomePageState extends State<HomePage> {
               )).toList(),
             ),
           ),
-          gradientBox()
+          gradientBox(),
+          topLayerWidget(),
         ],
       ),
     );
@@ -46,7 +48,7 @@ class _HomePageState extends State<HomePage> {
       alignment: Alignment.bottomCenter,
       child: Container(
         width: size.width,
-        height: size.height *.90,
+        height: size.height *.80,
         decoration: const BoxDecoration(
             gradient: LinearGradient(
                 colors: [
@@ -55,9 +57,56 @@ class _HomePageState extends State<HomePage> {
                 ],
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
-                stops: [0.65,2.0]
+                stops: [0.65,1.0]
             )
         ),
+      ),
+    );
+  }
+  topBarWidget(){
+    final size = MediaQuery.of(context).size;
+    return SizedBox(
+      height: size.height *.12,
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+         Row(
+           children: [
+             IconButton(onPressed: (){
+
+             }, icon:  const Icon(Icons.menu ,  color: Colors.white),),
+
+           ],
+         ),
+          Row(
+            children: [
+              IconButton(onPressed: (){
+
+              }, icon:  const Icon(Icons.search),),
+              IconButton(onPressed: (){
+
+              }, icon:  const Icon(Icons.notifications),)
+            ],
+          )
+
+        ],
+      ),
+    );
+  }
+  topLayerWidget(){
+    return  Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width * 0.05,
+        vertical: MediaQuery.of(context).size.height * 0.005
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          topBarWidget()
+        ],
       ),
     );
   }
