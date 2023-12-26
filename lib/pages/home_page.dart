@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:gamefly/pages/Widget/scrollable_games_widget.dart';
 import 'package:gamefly/utils/data/data.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -64,7 +65,8 @@ class _HomePageState extends State<HomePage> {
           ),
           gradientBox(),
           topLayerWidget(),
-          gameInfoWidget(),
+
+
         ],
       ),
     );
@@ -123,17 +125,20 @@ class _HomePageState extends State<HomePage> {
     );
   }
   topLayerWidget(){
+    final size = MediaQuery.of(context).size;
     return  Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * 0.05,
-        vertical: MediaQuery.of(context).size.height * 0.005
+        horizontal: size.width * 0.05,
+        vertical: size.height * 0.005
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          topBarWidget()
+          topBarWidget(),
+          gameInfoWidget(),
+          ScrollableGamesWidget(width: size.width, height: size.height *.29 , data: games,)
         ],
       ),
     );
@@ -141,22 +146,25 @@ class _HomePageState extends State<HomePage> {
   gameInfoWidget(){
     var size = MediaQuery.of(context).size;
     return  SizedBox(
-      height: MediaQuery.of(context).size.height *.90,
+      height: MediaQuery.of(context).size.height *.35,
       width: MediaQuery.of(context).size.width,
       child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          Text(games[selectedPage].name, maxLines: 2, style: TextStyle(
-            fontSize: MediaQuery.of(context).size.height *.040,
-          ),),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(games[selectedPage].name, maxLines: 2, style: TextStyle(
+              fontSize: MediaQuery.of(context).size.height *.040,
+            ),),
+          ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: games.map((e) {
-              double doubleRadius =  size.height *.015;
+              double doubleRadius =  size.height *.009;
               return  Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Container(
@@ -164,8 +172,9 @@ class _HomePageState extends State<HomePage> {
                   width:doubleRadius *2 ,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: Colors.white
+                      color: e.name == games[selectedPage].name ?Colors.green : Colors.grey
                   ),
+
                 ),
               );
             }).toList(),
