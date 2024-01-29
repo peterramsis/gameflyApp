@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:gamefly/utils/data/data.dart';
 
 class ScrollableGamesWidget extends StatelessWidget {
-  const ScrollableGamesWidget({super.key , this.data , required this.width,required this.height});
+  const ScrollableGamesWidget({super.key , this.data , required this.width,required this.height , this.showTitle = true});
   final dynamic data;
   final double width;
   final double height;
+  final bool showTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +34,12 @@ class ScrollableGamesWidget extends StatelessWidget {
                 ),
               ),
             ),
-            Text(games[index].name ,  maxLines: 4 , style: TextStyle(
-              fontSize: height *.065
-            )),
+            showTitle == true ? SizedBox(
+              width: 140,
+              child: Text(games[index].name,  maxLines: 3 , style: TextStyle(
+                  fontSize: height *.065
+              )),
+            ) : const SizedBox(),
           ],
         );
       } , itemCount: data.length,),

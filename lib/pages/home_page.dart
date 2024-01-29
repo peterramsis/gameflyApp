@@ -42,6 +42,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Stack(
         children: [
+
           SizedBox(
             width: size.width,
             height: size.height * .50,
@@ -65,6 +66,8 @@ class _HomePageState extends State<HomePage> {
           ),
           gradientBox(),
           topLayerWidget(),
+
+
 
 
         ],
@@ -93,6 +96,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
   topBarWidget(){
     final size = MediaQuery.of(context).size;
     return SizedBox(
@@ -138,7 +142,9 @@ class _HomePageState extends State<HomePage> {
         children: [
           topBarWidget(),
           gameInfoWidget(),
-          ScrollableGamesWidget(width: size.width, height: size.height *.29 , data: games,)
+          ScrollableGamesWidget(width: size.width, height: size.height *.29 , data: games, showTitle: true),
+          bannerGame(size),
+          ScrollableGamesWidget(width: size.width, height: size.height *.18 , data: games,showTitle: false),
         ],
       ),
     );
@@ -146,7 +152,7 @@ class _HomePageState extends State<HomePage> {
   gameInfoWidget(){
     var size = MediaQuery.of(context).size;
     return  SizedBox(
-      height: MediaQuery.of(context).size.height *.35,
+      height: MediaQuery.of(context).size.height *.20,
       width: MediaQuery.of(context).size.width,
       child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -180,6 +186,19 @@ class _HomePageState extends State<HomePage> {
             }).toList(),
           )
         ],
+      ),
+    );
+  }
+
+  bannerGame(deviceSize){
+    return Container(
+      width: deviceSize.width,
+      height: deviceSize.height * .20,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: NetworkImage(games[2].image),
+        ),
+        borderRadius: BorderRadius.circular(20)
       ),
     );
   }
